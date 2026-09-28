@@ -15,22 +15,31 @@ A super simple FastAPI application that allows students to view and sign up for 
    pip install fastapi uvicorn
    ```
 
-2. Run the application:
+2. Create a teacher account. You will be prompted for its password, and only a salted password hash is stored:
 
    ```
-   python app.py
+   python src/create_teacher.py teachername
    ```
 
-3. Open your browser and go to:
-   - API documentation: http://localhost:8000/docs
-   - Alternative documentation: http://localhost:8000/redoc
+3. Run the application from the repository root:
+
+   ```
+   uvicorn app:app --app-dir src --reload
+   ```
+
+4. Open the app at http://localhost:8000. API documentation is available at `/docs` and `/redoc`.
+
+Teacher credentials are stored in `src/teachers.json`, which is ignored by Git. Teacher sessions use an HTTP-only, same-site cookie and expire after eight hours. Set `SECURE_COOKIES=true` when serving the app over HTTPS.
 
 ## API Endpoints
 
 | Method | Endpoint                                                          | Description                                                         |
 | ------ | ----------------------------------------------------------------- | ------------------------------------------------------------------- |
 | GET    | `/activities`                                                     | Get all activities with their details and current participant count |
-| POST   | `/activities/{activity_name}/signup?email=student@mergington.edu` | Sign up for an activity                                             |
+| POST   | `/auth/login`                                                     | Log in as a teacher                                                  |
+| POST   | `/auth/logout`                                                    | End the current teacher session                                      |
+| POST   | `/activities/{activity_name}/signup?email=student@mergington.edu` | Register a student (teachers only)                                  |
+| DELETE | `/activities/{activity_name}/unregister?email=student@mergington.edu` | Unregister a student (teachers only)                             |
 
 ## Data Model
 
@@ -47,4 +56,4 @@ The application uses a simple data model with meaningful identifiers:
    - Name
    - Grade level
 
-All data is stored in memory, which means data will be reset when the server restarts.
+Activity data and teacher sessions are stored in memory, which means activity data resets and teacher sessions end when the server restarts. Teacher credential hashes are stored separately in `src/teachers.json`.
