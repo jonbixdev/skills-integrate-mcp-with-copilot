@@ -8,6 +8,19 @@
   </head>
   <body>
     <header>
+      <div class="account-menu">
+        <button id="account-menu-toggle" class="account-trigger" type="button" aria-label="Open account menu" aria-expanded="false" aria-controls="account-menu">
+          <svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22">
+            <circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="1.8" />
+            <path d="M4.5 21a7.5 7.5 0 0 1 15 0" fill="none" stroke="currentColor" stroke-width="1.8" />
+          </svg>
+        </button>
+        <div id="account-menu" class="account-menu-panel hidden">
+          <span id="teacher-status" class="teacher-status hidden"></span>
+          <button id="teacher-login-button" type="button">Teacher login</button>
+          <button id="teacher-logout-button" type="button" class="hidden">Log out</button>
+        </div>
+      </div>
       <h1>Mergington High School</h1>
       <h2>Extracurricular Activities</h2>
     </header>
@@ -23,7 +36,8 @@
 
       <section id="signup-container">
         <h3>Sign Up for an Activity</h3>
-        <form id="signup-form">
+        <p id="teacher-required">Teacher login is required to manage activity enrollment.</p>
+        <form id="signup-form" class="hidden">
           <div class="form-group">
             <label for="email">Student Email:</label>
             <input type="email" id="email" required placeholder="your-email@mergington.edu" />
@@ -40,6 +54,25 @@
         <div id="message" class="hidden"></div>
       </section>
     </main>
+
+    <dialog id="login-dialog" aria-labelledby="login-title">
+      <form id="login-form">
+        <h3 id="login-title">Teacher login</h3>
+        <div class="form-group">
+          <label for="teacher-username">Username</label>
+          <input id="teacher-username" name="username" autocomplete="username" required />
+        </div>
+        <div class="form-group">
+          <label for="teacher-password">Password</label>
+          <input id="teacher-password" name="password" type="password" autocomplete="current-password" required />
+        </div>
+        <p id="login-error" class="error hidden" role="alert"></p>
+        <div class="dialog-actions">
+          <button id="login-cancel" type="button" class="secondary-button">Cancel</button>
+          <button type="submit">Log in</button>
+        </div>
+      </form>
+    </dialog>
 
     <footer>
       <p>&copy; 2026 Mergington High School</p>
